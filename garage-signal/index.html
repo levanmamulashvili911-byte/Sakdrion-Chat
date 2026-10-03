@@ -1,7 +1,7 @@
-<title>ფარეხის კოსმოსური ანტენა</title>
+<title>Zahesi Station</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+Georgian:wdth,wght@62.5..100,300..800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..800&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
   :root {
     /* Layout: full-bleed WebGL night scene; instrument cards pinned to the top corners, a control dock along the bottom edge */
@@ -14,7 +14,7 @@
     --signal-ink: #03211d;
     --amber: #ffb24d;
     --red: #ff5b4f;
-    --f-ui: "Noto Sans Georgian", "Sylfaen", "Segoe UI", system-ui, sans-serif;
+    --f-ui: "Archivo", "Helvetica Neue", "Segoe UI", system-ui, sans-serif;
     --f-num: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
     --t-xs: 11px;
     --t-s: 12.5px;
@@ -211,40 +211,40 @@
   }
 </style>
 
-<canvas id="scene" aria-label="სამგანზომილებიანი სცენა: ავტოფარეხი, რომლის სახურავზეც სიგნალის ანტენა დგას"></canvas>
+<canvas id="scene" aria-label="3D scene: a garage at night with a deep-space signal dish on its roof"></canvas>
 
 <div class="hud">
   <div class="hud-top">
     <section class="card ident">
-      <p class="eyebrow">სადგური ფარეხი-1 · 23:47</p>
-      <h1>კოსმოსური ანტენა</h1>
-      <p class="sub">3.25 მ პარაბოლური რეფლექტორი, კასეგრენის სქემა. 20 კვტ გადამცემი ავტოფარეხის სახურავზე.</p>
+      <p class="eyebrow">Deep-space uplink · ZHS-1 · 23:47</p>
+      <h1>Zahesi Station</h1>
+      <p class="sub">A 3.25 m Cassegrain dish and a 20 kW transmitter, bolted to a garage roof.</p>
       <div class="tools">
-        <button class="tool" type="button" id="btn-sound" aria-pressed="false">ხმა</button>
-        <button class="tool" type="button" id="btn-torch" aria-pressed="true">ფანარი</button>
-        <button class="tool" type="button" id="btn-cine" aria-pressed="true">ავტოკამერა</button>
-        <button class="tool" type="button" id="btn-view">საწყისი ხედი</button>
+        <button class="tool" type="button" id="btn-sound" aria-pressed="false">Sound</button>
+        <button class="tool" type="button" id="btn-torch" aria-pressed="true">Torch</button>
+        <button class="tool" type="button" id="btn-cine" aria-pressed="true">Auto camera</button>
+        <button class="tool" type="button" id="btn-view">Reset view</button>
       </div>
-      <p class="hint">გადაათრიე: შემობრუნება · სქროლი: მასშტაბი · Space: გაგზავნა</p>
+      <p class="hint">Drag to orbit · Scroll or pinch to zoom · Space to send</p>
     </section>
     <div class="right-col">
-      <section class="card telemetry" aria-label="ტელემეტრია">
+      <section class="card telemetry" aria-label="Telemetry">
         <dl>
-          <div><dt>აზიმუტი</dt><dd id="t-az">000.0°</dd></div>
-          <div><dt>ელევაცია</dt><dd id="t-el">00.0°</dd></div>
-          <div><dt>სიხშირე</dt><dd id="t-freq">—</dd></div>
-          <div><dt>სიმძლავრე</dt><dd id="t-pow">0.4 kW</dd></div>
-          <div><dt>გაძლიერება</dt><dd id="t-gain">—</dd></div>
+          <div><dt>Azimuth</dt><dd id="t-az">000.0°</dd></div>
+          <div><dt>Elevation</dt><dd id="t-el">00.0°</dd></div>
+          <div><dt>Frequency</dt><dd id="t-freq">—</dd></div>
+          <div><dt>Power</dt><dd id="t-pow">0.4 kW</dd></div>
+          <div><dt>Gain</dt><dd id="t-gain">—</dd></div>
           <div><dt>EIRP</dt><dd id="t-eirp">—</dd></div>
         </dl>
         <div class="spec-wrap">
-          <div class="spec-head"><span>სპექტრი</span><span id="t-bw">სხივი 1.1°</span></div>
+          <div class="spec-head"><span>Spectrum</span><span id="t-bw">beam 1.1°</span></div>
           <canvas id="spectrum" width="600" height="108" aria-hidden="true"></canvas>
         </div>
       </section>
       <section class="card log" aria-live="polite">
-        <h2>გაგზავნილი სიგნალები</h2>
-        <ol id="log"><li class="empty">ჯერ არაფერი გაგზავნილა. აირჩიე სამიზნე და დააჭირე „გაგზავნას“.</li></ol>
+        <h2>Signals sent</h2>
+        <ol id="log"><li class="empty">Nothing sent yet. Pick a target and press Send.</li></ol>
       </section>
     </div>
   </div>
@@ -254,23 +254,23 @@
   <form class="card dock" id="dock" autocomplete="off">
     <div class="status-row">
       <span class="state-dot" id="state-dot" data-s="idle"></span>
-      <span id="status">ლოდინი · ანტენა ცას სკანირებს</span>
+      <span id="status">Standby · scanning the sky</span>
       <span id="travel"></span>
     </div>
     <div class="meter"><i id="meter"></i></div>
     <div class="bits" id="bits" aria-hidden="true" hidden></div>
     <div class="controls">
     <fieldset class="targets" id="targets">
-      <legend>სამიზნე</legend>
-      <label class="chip"><input type="radio" id="tg-moon" name="target" value="moon" checked><span><b>მთვარე</b><small>1.28 წმ · ექო</small></span></label>
-      <label class="chip"><input type="radio" id="tg-mars" name="target" value="mars"><span><b>მარსი</b><small>≈ 12.5 წთ</small></span></label>
-      <label class="chip"><input type="radio" id="tg-voyager" name="target" value="voyager"><span><b>ვოიაჯერ 1</b><small>≈ 23.9 სთ</small></span></label>
-      <label class="chip"><input type="radio" id="tg-proxima" name="target" value="proxima"><span><b>პროქსიმა b</b><small>4.25 წელი</small></span></label>
+      <legend>Target</legend>
+      <label class="chip"><input type="radio" id="tg-moon" name="target" value="moon" checked><span><b>Moon</b><small>1.28 s · echo</small></span></label>
+      <label class="chip"><input type="radio" id="tg-mars" name="target" value="mars"><span><b>Mars</b><small>≈ 12.5 min</small></span></label>
+      <label class="chip"><input type="radio" id="tg-voyager" name="target" value="voyager"><span><b>Voyager 1</b><small>≈ 23.9 h</small></span></label>
+      <label class="chip"><input type="radio" id="tg-proxima" name="target" value="proxima"><span><b>Proxima b</b><small>4.25 years</small></span></label>
     </fieldset>
     <div class="send">
-      <label for="msg" class="sr">შეტყობინება</label>
-      <input id="msg" maxlength="64" value="გამარჯობა, სამყაროვ! ფარეხი-1" placeholder="შეტყობინება კოსმოსისთვის">
-      <button id="send" type="submit">გაგზავნა</button>
+      <label for="msg" class="sr">Message</label>
+      <input id="msg" maxlength="64" value="Hello from Zahesi Station!" placeholder="Message for deep space">
+      <button id="send" type="submit">Send</button>
     </div>
     </div>
   </form>
@@ -278,9 +278,9 @@
 
 <div class="loader" id="loader">
   <div class="loader-box">
-    <p id="load-text">სცენის აგება…</p>
+    <p id="load-text">Building the scene…</p>
     <div class="bar"><i id="load-fill"></i></div>
-    <small id="load-step">ტექსტურები იხატება კოდით</small>
+    <small id="load-step">Every texture is painted in code</small>
   </div>
 </div>
 
@@ -321,10 +321,10 @@ const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const SMALL = Math.min(innerWidth, innerHeight) < 620 || /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
 
 const TARGETS = {
-  moon:    { name: 'მთვარე',      az: 110, el: 27, lightTime: 1.282,     km: 384400,    freq: 1296.1e6,   band: '23 სმ · EME', echo: true },
-  mars:    { name: 'მარსი',       az: 204, el: 40, lightTime: 750,       km: 225e6,     freq: 7.183e9,    band: 'X' },
-  voyager: { name: 'ვოიაჯერ 1',   az: 96,  el: 46, lightTime: 86060,     km: 25.8e9,    freq: 2114.677e6, band: 'S' },
-  proxima: { name: 'პროქსიმა b',  az: 216, el: 52, lightTime: 1.3401e8,  km: 4.0175e13, freq: 1420.406e6, band: 'H I 21 სმ' },
+  moon:    { name: 'Moon',        az: 110, el: 27, lightTime: 1.282,     km: 384400,    freq: 1296.1e6,   band: '23 cm · EME', echo: true },
+  mars:    { name: 'Mars',        az: 204, el: 40, lightTime: 750,       km: 225e6,     freq: 7.183e9,    band: 'X' },
+  voyager: { name: 'Voyager 1',   az: 96,  el: 46, lightTime: 86060,     km: 25.8e9,    freq: 2114.677e6, band: 'S' },
+  proxima: { name: 'Proxima b',   az: 216, el: 52, lightTime: 1.3401e8,  km: 4.0175e13, freq: 1420.406e6, band: 'H I 21 cm' },
 };
 for (const t of Object.values(TARGETS)) {
   const lambda = 299792458 / t.freq;
@@ -575,9 +575,10 @@ function labelTex() {
   x.fillStyle = '#e0b40f'; x.beginPath(); x.moveTo(52, 22); x.lineTo(92, 92); x.lineTo(12, 92); x.closePath(); x.fill();
   x.strokeStyle = '#111'; x.lineWidth = 5; x.stroke();
   x.fillStyle = '#111'; x.beginPath(); x.moveTo(56, 40); x.lineTo(42, 64); x.lineTo(54, 64); x.lineTo(46, 84); x.lineTo(64, 58); x.lineTo(52, 58); x.closePath(); x.fill();
-  x.font = '700 22px "Noto Sans Georgian", Sylfaen, sans-serif'; x.textBaseline = 'top';
-  x.fillText('მაღალი', 104, 30); x.fillText('ძაბვა', 104, 56);
-  x.font = '500 17px "IBM Plex Mono", monospace'; x.fillText('RF 20 kW · ფარეხი-1', 12, 112);
+  x.font = '800 22px Archivo, "Helvetica Neue", Arial, sans-serif'; x.textBaseline = 'top';
+  x.fillText('DANGER', 104, 30);
+  x.font = '700 15px Archivo, "Helvetica Neue", Arial, sans-serif'; x.fillText('HIGH VOLTAGE', 104, 60);
+  x.font = '500 17px "IBM Plex Mono", monospace'; x.fillText('RF 20 kW · ZAHESI-1', 12, 112);
   x.fillRect(12, 136, 232, 3);
   return tex(c, { repeat: false });
 }
@@ -728,8 +729,8 @@ let renderer;
 try {
   renderer = new THREE.WebGLRenderer({ canvas, antialias: false, powerPreference: 'high-performance' });
 } catch (e) {
-  $('load-text').textContent = 'WebGL ვერ ჩაირთო.';
-  $('load-step').textContent = 'სცადე სხვა ბრაუზერი ან ჩართე აპარატურული აჩქარება.';
+  $('load-text').textContent = 'WebGL could not start.';
+  $('load-step').textContent = 'Try another browser, or turn on hardware acceleration.';
   throw e;
 }
 const DPR = Math.min(devicePixelRatio || 1, SMALL ? 1.5 : 2);
@@ -1484,17 +1485,17 @@ function setPhase(p) {
   const dot = $('state-dot');
   const busy = p !== 'idle';
   $('send').disabled = busy;
-  $('send').textContent = busy ? (p === 'transmit' ? 'გადაცემა…' : p === 'cool' ? 'გაგრილება…' : 'მზადება…') : 'გაგზავნა';
+  $('send').textContent = busy ? (p === 'transmit' ? 'Transmitting…' : p === 'cool' ? 'Cooling…' : 'Preparing…') : 'Send';
   document.querySelectorAll('#targets input').forEach((i) => { i.disabled = busy; });
   dot.dataset.s = p;
   const n = S.target.name;
   const txt = {
-    idle: 'ლოდინი · ანტენა ცას სკანირებს',
-    slew: `ანტენა უმიზნებს: ${n}`,
-    lock: `სამიზნე დაჭერილია: ${n}`,
-    charge: 'გადამცემი იმუხტება',
-    transmit: `გადაცემა მიმდინარეობს · ${n}`,
-    cool: 'გადაცემა დასრულდა · გაგრილება',
+    idle: 'Standby · scanning the sky',
+    slew: `Slewing to ${n}`,
+    lock: `Target locked: ${n}`,
+    charge: 'Charging the transmitter',
+    transmit: `Transmitting to ${n}`,
+    cool: 'Transmission complete · cooling down',
   }[p];
   $('status').textContent = txt;
 }
@@ -1507,7 +1508,7 @@ function startSend() {
   if (S.phase !== 'idle') return;
   const key = document.querySelector('#targets input:checked').value;
   S.targetKey = key; S.target = TARGETS[key];
-  const msg = ($('msg').value || '').trim() || 'გამარჯობა, სამყაროვ!';
+  const msg = ($('msg').value || '').trim() || 'Hello, universe!';
   S.bits = utf8Bits(msg); S.bitPos = 0; S.msg = msg;
   S.cmdAz = S.target.az; S.cmdEl = S.target.el;
   updateTargetTelemetry();
@@ -1936,20 +1937,20 @@ const Sound = (() => {
 /* =====================================================================
    HUD
    ===================================================================== */
-const fmtNum = new Intl.NumberFormat('ka-GE', { maximumFractionDigits: 0 });
+const fmtNum = new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 });
 function fmtDur(s) {
-  if (s < 60) return s.toFixed(s < 10 ? 2 : 1) + ' წმ';
-  if (s < 3600) { const m = Math.floor(s / 60), ss = Math.floor(s % 60); return `${m} წთ ${String(ss).padStart(2, '0')} წმ`; }
-  if (s < 172800) { const h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60); return `${h} სთ ${String(m).padStart(2, '0')} წთ`; }
-  if (s < 63115200) return (s / 86400).toFixed(1) + ' დღე';
-  return (s / 31557600).toFixed(2) + ' წელი';
+  if (s < 60) return s.toFixed(s < 10 ? 2 : 1) + ' s';
+  if (s < 3600) { const m = Math.floor(s / 60), ss = Math.floor(s % 60); return `${m} min ${String(ss).padStart(2, '0')} s`; }
+  if (s < 172800) { const h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60); return `${h} h ${String(m).padStart(2, '0')} min`; }
+  if (s < 63115200) return (s / 86400).toFixed(1) + ' days';
+  return (s / 31557600).toFixed(2) + ' years';
 }
 function fmtFreq(f) { return f >= 1e9 ? (f / 1e9).toFixed(3) + ' GHz' : (f / 1e6).toFixed(1) + ' MHz'; }
 function updateTargetTelemetry() {
   const t = TARGETS[document.querySelector('#targets input:checked').value];
   $('t-freq').textContent = fmtFreq(t.freq);
   $('t-gain').textContent = t.gain.toFixed(1) + ' dBi';
-  $('t-bw').textContent = `${t.band} · სხივი ${t.beamwidth.toFixed(2)}°`;
+  $('t-bw').textContent = `${t.band} · beam ${t.beamwidth.toFixed(2)}°`;
 }
 let hudT = 0, specT = 0, logT = 0;
 const reticle = $('reticle'), rLabel = $('r-label');
@@ -1978,7 +1979,7 @@ function updateHUD(dt) {
     if (last) {
       const el = (performance.now() - last.t0) / 1000;
       const km = Math.min(el * C_KMS, last.target.km);
-      $('travel').textContent = el < last.target.lightTime ? `${fmtNum.format(km)} კმ · ${(el / last.target.lightTime * 100).toFixed(el / last.target.lightTime < 0.01 ? 4 : 1)}%` : (last.target.echo && last.echo ? 'ექო მიღებულია' : `${last.target.name}: მიაღწია`);
+      $('travel').textContent = el < last.target.lightTime ? `${fmtNum.format(km)} km · ${(el / last.target.lightTime * 100).toFixed(el / last.target.lightTime < 0.01 ? 4 : 1)}%` : (last.target.echo && last.echo ? 'Echo received' : `Arrived at ${last.target.name}`);
     }
     // reticle
     if (S.phase !== 'idle' && S.phase !== 'cool') {
@@ -2025,10 +2026,10 @@ function renderLog() {
     const el = (now - r.t0) / 1000, frac = Math.min(1, el / r.target.lightTime);
     const msg = r.msg.length > 26 ? r.msg.slice(0, 25) + '…' : r.msg;
     let l2;
-    if (frac < 1) l2 = `${fmtNum.format(el * C_KMS)} კმ · ჩასვლამდე ${fmtDur(r.target.lightTime - el)}`;
-    else if (r.target.echo) l2 = r.echo ? `<span class="arrived">ექო დაბრუნდა · ${(2 * r.target.lightTime).toFixed(2)} წმ</span>` : 'მიაღწია მთვარეს · ექო გზაშია';
-    else l2 = `<span class="arrived">მიაღწია</span>`;
-    return `<li><div class="l1"><b>${r.target.name}</b><span>${r.bits} ბიტი</span></div><div class="l2">„${escapeHTML(msg)}“</div><div class="l2">${l2}</div><div class="bar"><i style="width:${(frac * 100).toFixed(frac < 0.01 ? 5 : 2)}%"></i></div></li>`;
+    if (frac < 1) l2 = `${fmtNum.format(el * C_KMS)} km · arrives in ${fmtDur(r.target.lightTime - el)}`;
+    else if (r.target.echo) l2 = r.echo ? `<span class="arrived">Echo returned after ${(2 * r.target.lightTime).toFixed(2)} s</span>` : 'Reached the Moon · echo on its way back';
+    else l2 = `<span class="arrived">Arrived</span>`;
+    return `<li><div class="l1"><b>${r.target.name}</b><span>${r.bits} bits</span></div><div class="l2">“${escapeHTML(msg)}”</div><div class="l2">${l2}</div><div class="bar"><i style="width:${(frac * 100).toFixed(frac < 0.01 ? 5 : 2)}%"></i></div></li>`;
   }).join('');
 }
 function escapeHTML(s) { return s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
@@ -2059,32 +2060,32 @@ function onResize() {
    ===================================================================== */
 function progress(p, step) { $('load-fill').style.width = (p * 100).toFixed(0) + '%'; if (step) $('load-step').textContent = step; }
 async function boot() {
-  progress(0.05, 'კედლები: ფურცლოვანი ლითონი'); await tick();
+  progress(0.05, 'Walls: corrugated steel'); await tick();
   if (document.fonts && document.fonts.ready) await Promise.race([document.fonts.ready, new Promise((r) => setTimeout(r, 1500))]);
   T.wallWhite = corrugated({ wm: GAR.w, hm: GAR.h, base: [0.86, 0.85, 0.8], seed: 11, grime: 1.0, algae: 0.6 });
   progress(0.2); await tick();
   T.wallBrown = corrugated({ W: 1024, wm: GAR.d, hm: GAR.h, base: [0.34, 0.19, 0.15], seed: 12, grime: 0.7, algae: 0.4, rough: 0.55 });
   T.door = corrugated({ W: 512, H: 512, wm: 2.7, hm: 2.1, pitch: 0.075, ribH: 0.012, profile: sineProfile, horizontal: true, base: [0.78, 0.74, 0.64], seed: 13, grime: 0.6, algae: 0.3 });
-  progress(0.35, 'სახურავი და აგური'); await tick();
+  progress(0.35, 'Roof and brickwork'); await tick();
   T.roof = corrugated({ W: 1024, H: 512, wm: 1.9, hm: 1.9, pitch: 0.0762, ribH: 0.017, profile: sineProfile, base: [0.55, 0.57, 0.57], seed: 14, grime: 1.2, algae: 0.0, rough: 0.42 });
   T.brick = brickTex();
-  progress(0.5, 'მიწა, ფილები, ლითონი'); await tick();
+  progress(0.5, 'Ground, pavers, metal'); await tick();
   T.ground = groundTex(); T.paver = paverTex(); T.metalRough = metalRoughTex(); T.rust = rustTex();
   T.dish = dishTex(); T.diamond = diamondPlate(); T.hazard = hazardTex(); T.vent = ventTex(); T.label = labelTex();
   T.leaf = leafTex(); T.glow = glowTex(); T.puff = puffTex(); T.cookie = cookieTex(); T.moon = moonTex();
-  progress(0.65, 'ხეები და მცენარეები'); await tick();
+  progress(0.65, 'Trees and plants'); await tick();
   buildMaterials();
   buildEnvironment();
   buildSky();
   buildYard();
-  progress(0.82, 'ანტენა'); await tick();
+  progress(0.82, 'The dish'); await tick();
   buildDish();
   buildLights();
   buildFX();
   buildPost();
   buildControls();
   bindUI();
-  progress(0.95, 'შეიდერების კომპილაცია'); await tick();
+  progress(0.95, 'Compiling shaders'); await tick();
   update(0.016); updateCamera(0.016, 0);
   renderer.compile(scene, camera);
   composer.render(0.016);
@@ -2116,5 +2117,5 @@ window.__sim = {
   pause(v) { paused = v; clock.getDelta(); },
   step(n, dt = 1 / 30) { for (let i = 0; i < n; i++) frame(dt, i === n - 1); },
 };
-boot().catch((e) => { console.error(e); $('load-text').textContent = 'სცენა ვერ აიგო.'; $('load-step').textContent = String(e && e.message || e); });
+boot().catch((e) => { console.error(e); $('load-text').textContent = 'The scene failed to build.'; $('load-step').textContent = String(e && e.message || e); });
 </script>
